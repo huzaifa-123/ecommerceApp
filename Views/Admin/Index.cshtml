@@ -1,0 +1,110 @@
+﻿@{
+    ViewData["Title"] = "Admin Dashboard";
+}
+
+<div class="admin-container">
+    <h2 class="text-center fw-bold mb-4">Admin Dashboard</h2>
+
+    <div class="dashboard-cards">
+        <a class="card btn btn-primary" asp-controller="AdminProduct" asp-action="Index">
+            <i class="fas fa-box-open"></i>
+            <h5>Manage Products</h5>
+            <p>View, edit, or add new products</p>
+        </a>
+        <a class="card btn btn-secondary" asp-controller="AdminCategory" asp-action="Index">
+            <i class="fas fa-list"></i>
+            <h5>Manage Categories</h5>
+            <p>Organize and update categories</p>
+        </a>
+        <a class="card btn btn-success" asp-controller="Order" asp-action="Index">
+            <i class="fas fa-shopping-cart"></i>
+            <h5>Manage Orders</h5>
+            <p>Track and process customer orders</p>
+        </a>
+        <a class="card btn btn-warning" asp-controller="User" asp-action="Index">
+            <i class="fas fa-users"></i>
+            <h5>Manage Users</h5>
+            <p>View and manage user accounts</p>
+        </a>
+        <a class="card btn btn-danger" asp-controller="Reports" asp-action="Index">
+            <i class="fas fa-chart-line"></i>
+            <h5>View Reports</h5>
+            <p>Analyze sales and performance</p>
+        </a>
+    </div>
+</div>
+
+<script>
+    // Prevent back navigation on the admin panel
+    if (window.location.pathname.includes("/Admin")) {
+        window.onload = function () {
+            history.pushState(null, null, document.URL);
+        };
+
+        window.onpopstate = function () {
+            history.pushState(null, null, document.URL);
+        };
+    }
+</script>
+
+<style>
+    .admin-container {
+        max-width: 90%;
+        margin: auto;
+        padding: 40px 20px;
+        background: #f8f9fa;
+        border-radius: 12px;
+        box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .dashboard-cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 20px;
+        justify-content: center;
+    }
+
+    .card {
+        text-align: center;
+        padding: 20px;
+        border-radius: 10px;
+        font-weight: bold;
+        color: white;
+        transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out, filter 0.3s ease-in-out;
+    }
+
+        /* Set vibrant background colors for each card */
+        .card.btn-primary {
+            background-color: #007bff;
+        }
+
+        .card.btn-secondary {
+            background-color: #6c757d;
+        }
+
+        .card.btn-success {
+            background-color: #28a745;
+        }
+
+        .card.btn-warning {
+            background-color: #ffc107;
+            color: black;
+        }
+
+        .card.btn-danger {
+            background-color: #dc3545;
+        }
+
+        /* Icon Styling */
+        .card i {
+            font-size: 40px;
+            margin-bottom: 10px;
+        }
+
+        /* Hover Effect: Slight Brightness & Depth */
+        .card:hover {
+            transform: scale(1.05);
+            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+            filter: brightness(1.1);
+        }
+</style>

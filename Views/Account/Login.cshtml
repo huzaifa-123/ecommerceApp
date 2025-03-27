@@ -1,0 +1,54 @@
+﻿@model ECommerceApp.Models.LoginViewModel
+
+<div class="login-container">
+    <h2 class="text-center fw-bold">Login</h2>
+    <form asp-action="Login" class="login-form shadow-lg p-4">
+        <div class="form-group mb-3">
+            <label class="fw-semibold">Email</label>
+            <input asp-for="Email" class="form-control custom-input" placeholder="Enter your email" />
+        </div>
+        <div class="form-group mb-3">
+            <label class="fw-semibold">Password</label>
+            <input asp-for="Password" type="password" class="form-control custom-input" placeholder="Enter your password" />
+        </div>
+        <button type="submit" class="btn btn-success w-100 mt-3">Login</button>
+    </form>
+</div>
+
+<style>
+    .login-container {
+        max-width: 400px;
+        margin: 50px auto;
+        background: #fff;
+        padding: 20px;
+        border-radius: 12px;
+    }
+
+    .login-form {
+        background: #f8f9fa;
+        border-radius: 12px;
+        transition: transform 0.3s ease-in-out;
+    }
+
+        .login-form:hover {
+            transform: scale(1.02);
+        }
+
+    .custom-input {
+        border-radius: 8px;
+        padding: 10px;
+        font-size: 16px;
+        transition: all 0.3s ease-in-out;
+    }
+
+        .custom-input:focus {
+            border-color: #28a745;
+            box-shadow: 0px 0px 8px rgba(40, 167, 69, 0.5);
+        }
+
+    button {
+        border-radius: 8px;
+        font-size: 18px;
+        font-weight: bold;
+    }
+</style>

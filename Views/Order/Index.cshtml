@@ -1,0 +1,62 @@
+﻿@model List<ECommerceApp.Models.Order>
+
+@{
+    ViewData["Title"] = "Manage Orders";
+}
+
+<h2>Manage Orders</h2>
+
+<table class="table">
+    <thead class="table-dark">
+        <tr>
+            <th>Order ID</th>
+            <th>User ID</th>
+            <th>Order Date</th>
+            <th>Total Amount</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var order in Model)
+        {
+            <tr>
+                <td>@order.Id</td>
+                <td>@order.UserId</td>
+                <td>@order.OrderDate.ToString("yyyy-MM-dd")</td>
+                <td>$@order.TotalAmount</td>
+                <td>
+                    <select class="form-control status-select" data-order-id="@order.Id">
+                        <option value="Pending" selected="@(order.Status == "Pending")">Pending</option>
+                        <option value="Processing" selected="@(order.Status == "Processing")">Processing</option>
+                        <option value="Shipped" selected="@(order.Status == "Shipped")">Shipped</option>
+                        <option value="Completed" selected="@(order.Status == "Completed")">Completed</option>
+                        <option value="Cancelled" selected="@(order.Status == "Cancelled")">Cancelled</option>
+                    </select>
+
+                </td>
+                <td>
+                    <button class="btn btn-primary update-status" data-order-id="@order.Id">Update</button>
+                </td>
+
+            </tr>
+        }
+
+    </tbody>
+</table>
+<a asp-controller="Admin" asp-action="Index" class="btn btn-secondary">Back</a>
+
+<script>
+    $(document).ready(function () {
+        $(".update-status").click(function () {
+            var orderId = $(this).data("order-id");
+            var status = $(this).closest("tr").find(".status-select").val();
+
+            $.post("/Order/UpdateStatus", { orderId: orderId, status: status }, function (response) {
+                alert(response.message);
+            }).fail(function () {
+                alert("Error updating order status.");
+            });
+        });
+    });
+</script>

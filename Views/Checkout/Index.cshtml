@@ -1,0 +1,114 @@
+﻿@{
+    ViewData["Title"] = "Checkout";
+}
+
+<div class="container mt-4">
+    <h2 class="text-center mb-4">🛍️ Checkout</h2>
+
+    <div class="card shadow p-4">
+        <h4 class="fw-bold mb-3">Order Summary</h4>
+
+        <table class="table">
+            <thead class="table-dark">
+                <tr>
+                    <th>Product</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody id="checkoutItems"></tbody>
+        </table>
+
+        <h4 id="checkoutTotal" class="fw-bold text-end">Total: $0.00</h4>
+    </div>
+
+    <!-- Address & Contact Info -->
+    <div class="card shadow p-4 mt-4">
+        <h4 class="fw-bold mb-3">Delivery Information</h4>
+
+        <div class="mb-3">
+            <label for="userAddress" class="form-label">📍 Address</label>
+            <input type="text" id="userAddress" class="form-control" placeholder="Enter your address" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="userContact" class="form-label">📞 Contact Number</label>
+            <input type="text" id="userContact" class="form-control" placeholder="Enter your contact number" required>
+        </div>
+    </div>
+
+    <!-- Payment Section -->
+    <div class="card shadow p-4 mt-4">
+        <h4 class="fw-bold mb-3">Payment Method</h4>
+        <select id="paymentMethod" class="form-select">
+            <option value="Cash">💵 Cash on Delivery</option>
+        </select>
+    </div>
+
+    <!-- Buttons -->
+    <div class="d-flex justify-content-between mt-4">
+        <a asp-controller="Home" asp-action="Cart" class="btn btn-secondary">Back</a>
+        <button class="btn btn-primary" id="confirmOrderBtn">Confirm Order</button>
+    </div>
+</div>
+<div id="alertBox" class="alert alert-danger d-none" role="alert"></div>
+
+<script>
+    $(document).ready(function () {
+        var cart = JSON.parse(localStorage.getItem("cart")) || [];
+        var total = 0;
+
+        cart.forEach(item => {
+            var itemTotal = item.price * item.quantity;
+            total += itemTotal;
+
+            $("#checkoutItems").append(`
+                <tr>
+                    <td>${item.name}</td>
+                    <td>$${item.price}</td>
+                    <td>${item.quantity}</td>
+                    <td>$${itemTotal.toFixed(2)}</td>
+                </tr>
+            `);
+        });
+
+        $("#checkoutTotal").text(`Total: $${total.toFixed(2)}`);
+
+        $("#confirmOrderBtn").click(function () {
+            var address = $("#userAddress").val();
+            var contact = $("#userContact").val();
+
+            if (!address || !contact) {
+                alert("⚠️ Please enter your address and contact number.");
+                return;
+            }
+            $("#alertBox").addClass("d-none");
+            var orderData = {
+                address: address,
+                contact: contact,
+                paymentMethod: $("#paymentMethod").val(),
+                cartItems: cart.map(item => ({
+                    productId: Number(item.id),
+                    quantity: Number(item.quantity),
+                    price: parseFloat(item.price)
+                }))
+            };
+
+            $.ajax({
+                url: "/Checkout/PlaceOrder",
+                type: "POST",
+                contentType: "application/json",
+                data: JSON.stringify(orderData),
+                success: function (response) {
+                    alert("🎉 Order placed successfully!");
+                    localStorage.removeItem("cart");
+                    window.location.href = "/";
+                },
+                error: function (xhr) {
+                   $("#alertBox").removeClass("d-none").text("❌ Error placing order. Please try again.");
+                }
+            });
+        });
+    });
+</script>

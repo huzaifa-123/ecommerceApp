@@ -1,0 +1,53 @@
+﻿@{
+    ViewData["Title"] = "Reports";
+}
+
+<div class="container mt-5">
+    <h2 class="text-center fw-bold mb-4">📊 Sales & Performance Reports</h2>
+
+    <div class="table-responsive">
+        <table class="table table-hover shadow-sm">
+            <thead class="table-dark">
+                <tr>
+                    <th>Metric</th>
+                    <th>Value</th>
+                    <th>Date Updated</th>
+                    <th>Performance</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><i class="bi bi-cart-check me-2"></i> Total Orders</td>
+                    <td class="fw-bold">@ViewBag.TotalOrders</td>
+                    <td>@DateTime.Now.ToString("MMM dd, yyyy")</td>
+                    <td class="text-success fw-bold">📈 Good</td>
+                </tr>
+                <tr>
+                    <td><i class="bi bi-people me-2"></i> Total Users</td>
+                    <td class="fw-bold">@ViewBag.TotalUsers</td>
+                    <td>@DateTime.Now.ToString("MMM dd, yyyy")</td>
+                    <td class="text-info fw-bold">📊 Steady</td>
+                </tr>
+                <tr>
+                    <td><i class="bi bi-box-seam me-2"></i> Most Ordered Product</td>
+                    <td class="fw-bold">@ViewBag.MostOrderedProduct</td>
+                    <td>@DateTime.Now.ToString("MMM dd, yyyy")</td>
+                    <td class="text-success fw-bold">🔥 Popular</td>
+                </tr>
+                <tr>
+                    <td><i class="bi bi-x-circle me-2"></i> Least Ordered Product</td>
+                    <td class="fw-bold">@ViewBag.LeastOrderedProduct</td>
+                    <td>@DateTime.Now.ToString("MMM dd, yyyy")</td>
+                    <td class="text-danger fw-bold">⚠ Needs Attention</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Back Button -->
+    <div class="mt-4 text-center">
+        <a asp-controller="Admin" asp-action="Index" class="btn btn-secondary">
+            <i class="bi bi-arrow-left"></i> Back
+        </a>
+    </div>
+</div>

@@ -1,0 +1,89 @@
+﻿@model IEnumerable<ECommerceApp.Models.Order>
+
+@{
+    ViewData["Title"] = "My Orders";
+}
+
+<h2 class="mb-4">📦 My Orders</h2>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-warning">You haven't placed any orders yet.</div>
+}
+else
+{
+    <table class="table table-bordered shadow-sm">
+        <thead class="table-dark">
+            <tr>
+                <th>Order ID</th>
+                <th>Date</th>
+                <th>Total Price</th>
+                <th>Status</th>
+                <th>Details</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var order in Model)
+            {
+                <tr>
+                    <td>#@order.Id</td>
+                    <td>@order.OrderDate.ToString("yyyy-MM-dd")</td>
+                    <td>$@order.TotalAmount.ToString("0.00")</td> <!-- Trimmed to 2 decimals -->
+                    <td>
+                        @if (order.Status == "Pending")
+                        {
+                            <span class="badge bg-warning text-dark">Pending</span>
+                        }
+                        else if (order.Status == "Shipped")
+                        {
+                            <span class="badge bg-primary">Shipped</span>
+                        }
+                        else if (order.Status == "Delivered")
+                        {
+                            <span class="badge bg-success">Delivered</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-secondary">@order.Status</span>
+                        }
+                    </td>
+                    <td>
+                        <button class="btn btn-info" type="button" data-bs-toggle="collapse" data-bs-target="#orderDetails-@order.Id">
+                            View Details
+                        </button>
+                    </td>
+                </tr>
+                <tr class="collapse" id="orderDetails-@order.Id">
+                    <td colspan="5">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Product</th>
+                                    <th>Quantity</th>
+                                    <th>Price</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var detail in order.OrderDetails)
+                                {
+                                    <tr>
+                                        <td>@detail.Product.Name</td>
+                                        <td>@detail.Quantity</td>
+                                        <td>$@detail.Price.ToString("0.00")</td> <!-- Trimmed to 2 decimals -->
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+<!-- Back to Home Button -->
+<div class="mt-4">
+    <a href="@Url.Action("Index", "Home")" class="btn btn-secondary">
+         Back
+    </a>
+</div>

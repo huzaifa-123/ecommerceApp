@@ -1,0 +1,35 @@
+﻿@model IEnumerable<ECommerceApp.Models.Product>
+
+@{
+    ViewData["Title"] = "Manage Products";
+}
+
+<h2>Manage Products</h2>
+<a class="btn btn-success mb-3" asp-action="Create">Add Product</a>
+
+<table class="table table-bordered">
+    <thead class="table-dark">
+        <tr>
+            <th>Name</th>
+            <th>Price</th>
+            <th>Category</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var product in Model)
+        {
+            <tr>
+                <td>@product.Name</td>
+                <td>@product.Price</td>
+                <td>@product.Category?.Name</td>
+                <td>
+                    <a class="btn btn-warning btn-sm" asp-action="Edit" asp-route-id="@product.Id">Edit</a>
+                    <a class="btn btn-danger btn-sm" asp-action="Delete" asp-route-id="@product.Id"
+                       onclick="return confirm('Are you sure you want to delete this product?');">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<a asp-controller="Admin" asp-action="Index" class="btn btn-secondary">Back</a>
