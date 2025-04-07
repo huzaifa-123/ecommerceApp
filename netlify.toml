@@ -1,4 +1,0 @@
-[[redirects]]
-from = "/*"
-to = "/index.cshtml"
-status = 200

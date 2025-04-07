@@ -243,12 +243,7 @@
 <script>
     $(document).ready(function () {
         $(".addToCartBtn").click(function () {
-             let isAuthenticated = $(this).data("authenticated");
-
-            if (!isAuthenticated) {
-                alert("Please log in to add items to your cart.");
-                return;
-            }
+             
             var productId = $(this).data("id");
             var productName = $(this).data("name");
             var productPrice = $(this).data("price");
@@ -327,7 +322,7 @@
                 if (productName.includes(searchText)) {
                     $(this).show();
                     found = true;
-                } else {
+                } else {        
                     $(this).hide();
                 }
             });

@@ -22,7 +22,43 @@
 
             <div class="button-group mt-3">
                 <a href="/" class="btn btn-outline-secondary"><i class="bi bi-arrow-left"></i> Back to Home</a>
-                <button class="btn btn-success"><i class="bi bi-cart-plus"></i> Add to Cart</button>
+                <button class="btn btn-success addToCartBtn" data-id="@Model.Id" data-name="@Model.Name" data-price="@Model.Price">
+                    <i class="bi bi-cart-plus"></i> Add to Cart
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Order Detail Modal (Placing Outside the Loop) -->
+<div class="modal fade" id="orderModal" tabindex="-1" aria-labelledby="orderModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="orderModalLabel">Order Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="orderForm">
+                    <input type="hidden" id="productId">
+
+                    <div class="mb-3">
+                        <label class="form-label">Product Name</label>
+                        <input type="text" id="productName" class="form-control" readonly>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Price</label>
+                        <input type="text" id="productPrice" class="form-control" readonly>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Quantity</label>
+                        <input type="number" id="quantity" class="form-control" value="1" min="1">
+                    </div>
+
+                    <button type="button" class="btn btn-success" id="confirmOrder">Confirm</button>
+                </form>
             </div>
         </div>
     </div>
@@ -53,7 +89,44 @@
         font-weight: bold;
     }
 
-    .button-group .btn i {
-        margin-right: 5px;
-    }
+        .button-group .btn i {
+            margin-right: 5px;
+        }
 </style>
+
+<script>
+    $(document).ready(function () {
+        $(".addToCartBtn").click(function () {
+           
+            var productId = $(this).data("id");
+            var productName = $(this).data("name");
+            var productPrice = $(this).data("price");
+
+            // Set the values in the modal
+            $("#productId").val(productId);
+            $("#productName").val(productName);
+            $("#productPrice").val(productPrice);
+
+            // Show the modal
+            $("#orderModal").modal("show");
+        });
+
+        // Confirm the order
+        $("#confirmOrder").click(function () {
+            var orderItem = {
+                id: $("#productId").val(),
+                name: $("#productName").val(),
+                price: $("#productPrice").val(),
+                quantity: $("#quantity").val()
+            };
+
+            // Add the item to cart (localStorage for demo purposes)
+            var cart = JSON.parse(localStorage.getItem("cart")) || [];
+            cart.push(orderItem);
+            localStorage.setItem("cart", JSON.stringify(cart));
+
+            alert("Item added to cart!");
+            $("#orderModal").modal("hide"); // Close the modal
+        });
+    });
+</script>
